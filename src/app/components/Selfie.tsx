@@ -9,7 +9,7 @@ export function Selfie() {
   const videoConstraints = {
     width: 1280,
     height: 720,
-    facingMode: 'user',
+    facingMode: 'environment',
   };
 
   const webcamRef = React.useRef<Webcam>(null);
@@ -19,12 +19,14 @@ export function Selfie() {
     if (imageSrc) setImage(imageSrc);
   }, [webcamRef]);
   const [image, setImage] = React.useState<string | ImageData>('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [appSubmitted, setAppSubmitted] = React.useState(false);
 
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
     const submitImage = async () => {
+      setIsSubmitting(true);
       const response = await fetch(`${BASE_URL}/api/v1/selfie`, {
         method: 'POST',
         headers: {
@@ -35,9 +37,8 @@ export function Selfie() {
       });
       const data = await response.json();
 
-      if (data._id) {
-        setAppSubmitted(true);
-      }
+      setIsSubmitting(false);
+      setAppSubmitted(data._id || true);
     };
 
     if (image) {
@@ -55,7 +56,7 @@ export function Selfie() {
       )}
       {!appSubmitted && (
         <LoadingOverlay
-          active={!!image}
+          active={isSubmitting}
           spinner
           text='Submitting selfie...'
           className='relative h-[100vh] w-full flex justify-center items-center bg-emerald-500 px-3'
