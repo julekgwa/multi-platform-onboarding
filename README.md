@@ -1,0 +1,3 @@
+# React multi-platform-onboarding
+
+This React-based application is designed as a multi-platform onboarding system, allowing users to start their onboarding journey on a desktop, perform specific actions such as taking a selfie on their mobile device, and then seamlessly return to continue the process on the desktop application. This Proof of Concept (POC) showcases the integration of multi-device functionality to create a fluid and user-friendly onboarding experience.
